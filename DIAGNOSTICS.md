@@ -28,3 +28,8 @@ This file documents diagnostic thresholds and specs.
 
 - Limit buffer: ₹10,000 maximum daily flow capacity
 - Overcapacity behavior: Speedometer needle rev limits trigger warning blinkers
+## 🌌 Zero-Gravity Physics Constants
+
+- Upward float buoyancy speed: -0.015 * mass
+- Friction damping coefficient: 0.99 (air friction)
+- Elasticity bounce factor: 0.75 for layout borders

@@ -33,3 +33,6 @@ This file documents diagnostic thresholds and specs.
 - Upward float buoyancy speed: -0.015 * mass
 - Friction damping coefficient: 0.99 (air friction)
 - Elasticity bounce factor: 0.75 for layout borders
+## 🏎️ Telemetry Diagnostics Summary
+
+All systems operational. Status: Safe.

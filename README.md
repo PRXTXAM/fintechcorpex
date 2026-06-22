@@ -4,6 +4,7 @@ FintechCorpEx combines a modern dark telemetry aesthetic with the data requireme
 
 ![Aesthetic Dashboard HUD](https://img.shields.io/badge/AESTHETIC-TELEMETRY%20HUD-FF2800?style=for-the-badge)
 ![Tech Stack](https://img.shields.io/badge/TECH-HTML5%20%7C%20CSS3%20%7C%20VANILLA%20JS-blue?style=for-the-badge)
+[![Live Site](https://img.shields.io/badge/LIVE-DEPLOYMENT-00E676?style=for-the-badge)](https://fintechcorpex.onrender.com)
 
 ---
 

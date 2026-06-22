@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: fintechcorpex-telemetry
+    runtime: static
+    buildCommand: ""
+    publishPath: "."

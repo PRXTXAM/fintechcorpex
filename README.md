@@ -65,3 +65,13 @@ Then open your browser and navigate to:
 ```
 http://localhost:8000
 ```
+
+---
+
+## 🛠️ Telemetry Diagnostics & Features Checklist
+
+- [x] High-contrast carbon obsidian chassis theme
+- [x] Responsive canvas particle micro-interactions
+- [x] Real-time stopwatch and advance tax lap countdown
+- [x] Zero-Gravity physics breaker with dragging and spring-damping resets
+

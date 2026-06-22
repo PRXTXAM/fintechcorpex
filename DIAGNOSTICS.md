@@ -24,3 +24,7 @@ This file documents diagnostic thresholds and specs.
 - Interval ticker: 1000ms delta sync
 - Target date: Q2 September 15th
 - Sector tracks: S1, S2, S3, S4 sector splits
+## 💳 UPI Flow Capacity Telemetry
+
+- Limit buffer: ₹10,000 maximum daily flow capacity
+- Overcapacity behavior: Speedometer needle rev limits trigger warning blinkers

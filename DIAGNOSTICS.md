@@ -19,3 +19,8 @@ This file documents diagnostic thresholds and specs.
 
 - Nifty index polling rate: Mocked infinite scrolling marquee
 - Stock tracking latency: 300ms drift refresh rate logs
+## ⏱️ Tax Lap Countdown Timers
+
+- Interval ticker: 1000ms delta sync
+- Target date: Q2 September 15th
+- Sector tracks: S1, S2, S3, S4 sector splits

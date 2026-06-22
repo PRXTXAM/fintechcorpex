@@ -15,3 +15,7 @@ This file documents diagnostic thresholds and specs.
 - Synth Oscillator: Sawtooth wave output
 - Pitch range: 45Hz to 440Hz sweep logs
 - Gain capacity: 0.12 maximum safety limit
+## 📈 Market API Sync Logs
+
+- Nifty index polling rate: Mocked infinite scrolling marquee
+- Stock tracking latency: 300ms drift refresh rate logs

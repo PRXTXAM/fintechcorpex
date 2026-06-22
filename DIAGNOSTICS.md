@@ -10,3 +10,8 @@ This file documents diagnostic thresholds and specs.
 - Target FPS: 60 FPS constant
 - Max particle count: Dynamic scale capped at 120 nodes
 - Repulsion vector buffer: 120px cursor deflection radius
+## 🔊 Audio Synthesis Specifications
+
+- Synth Oscillator: Sawtooth wave output
+- Pitch range: 45Hz to 440Hz sweep logs
+- Gain capacity: 0.12 maximum safety limit

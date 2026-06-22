@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FINTECHCORPEX // Secure Telemetry & Financial Operations HUD</title>
+    <!-- Google Fonts: Orbitron, Syncopate, JetBrains Mono, Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,300&family=Orbitron:wght@400;500;700;900&family=Syncopate:wght@700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Background Canvas for Interactive Parallax Particles -->
+    <canvas id="particles-canvas"></canvas>
+
+    <!-- Infinite Scrolling Market Ticker -->
+    <div class="ticker-wrap">
+        <div class="ticker" id="stock-ticker">
+            <!-- Dynamically populated by JS for infinite flow -->
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="app-layout">
+        <!-- Floating Glassmorphic Top Bar (The Steering HUD) -->
+        <header class="topbar-hud">
+            <div class="brand-section">
+                <div class="brand-logo">
+                    <div class="logo-triangle"></div>
+                    <span class="logo-text">FINTECHCORPEX</span>
+                </div>
+                <div class="system-status">
+                    <span class="status-dot green"></span>
+                    <span class="status-text">OFFLINE TELEMETRY CO-PILOT: ONLINE</span>
+                </div>
+            </div>
+            
+            <div class="hud-center">
+                <div class="search-console">
+                    <i data-lucide="search" class="search-icon"></i>
+                    <input type="text" placeholder="ENTER TELEMETRY SEARCH CMD..." class="search-input">
+                </div>
+            </div>
+
+            <div class="hud-actions">
+                <div class="hud-stat-box">
+                    <span class="stat-label">LAP SEC</span>
+                    <span class="stat-val" id="hud-timer">00:00.00</span>
+                </div>
+                <div class="profile-badge">
+                    <div class="profile-avatar">🏎️</div>
+                    <div class="profile-info">
+                        <span class="profile-name">OP-01</span>
+                        <span class="profile-role">CHIEF PILOT</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Body Layout (Sidebar + Main Dashboard Content) -->
+        <div class="dashboard-body">
+            <!-- Sidebar Navigation -->
+            <aside class="sidebar-hud">
+                <nav class="sidebar-nav">
+                    <a href="#" class="nav-item active" title="Telemetry Dashboard">
+                        <i data-lucide="layout-dashboard"></i>
+                        <span class="nav-label">DASHBOARD</span>
+                    </a>
+                    <a href="#" class="nav-item" title="Portfolio Analytics">
+                        <i data-lucide="line-chart"></i>
+                        <span class="nav-label">ANALYTICS</span>
+                    </a>
+                    <a href="#" class="nav-item" title="Transaction Log">
+                        <i data-lucide="receipt"></i>
+                        <span class="nav-label">LEDGER</span>
+                    </a>
+                    <a href="#" class="nav-item" title="Tax & Compliance">
+                        <i data-lucide="shield-check"></i>
+                        <span class="nav-label">COMPLIANCE</span>
+                    </a>
+                    <a href="#" class="nav-item" id="nav-antigravity" title="Zero Gravity Mode">
+                        <i data-lucide="orbit"></i>
+                        <span class="nav-label">ZERO-G</span>
+                    </a>
+                </nav>
+                <div class="sidebar-footer">
+                    <div class="gear-indicator" id="gear-box">GEAR N</div>
+                </div>
+            </aside>
+
+            <!-- Main Scrollable Dashboard Content -->
+            <main class="main-content">
+                <div class="grid-container">
+                    
+                    <!-- Left Section: RPM Tachometer & Net Worth Graph -->
+                    <div class="grid-col span-2-lg">
+                        
+                        <!-- Net Worth Telemetry Card -->
+                        <section class="card red-glow-hover" id="card-networth">
+                            <div class="card-header">
+                                <div class="header-title-wrap">
+                                    <div class="title-accent"></div>
+                                    <h2 class="card-title">NET WORTH TELEMETRY</h2>
+                                </div>
+                                <div class="card-badge gain">
+                                    <i data-lucide="trending-up"></i> +18.4% YTD
+                                </div>
+                            </div>
+                            
+                            <div class="card-content flex-row">
+                                <div class="networth-values">
+                                    <span class="networth-label">CURRENT PORTFOLIO VALUE</span>
+                                    <h1 class="networth-num font-mono">₹4,82,91,540</h1>
+                                    <div class="networth-sub-stats font-mono">
+                                        <div class="sub-stat">
+                                            <span class="lbl">YTD GAIN</span>
+                                            <span class="val profit">+₹75,12,300</span>
+                                        </div>
+                                        <div class="sub-stat">
+                                            <span class="lbl">TODAY</span>
+                                            <span class="val profit">+₹2,45,180 (+0.5%)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="chart-container">
+                                    <canvas id="networth-chart"></canvas>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Budget RPM & Asset Gauge Card -->
+                        <section class="card" id="card-rpm">
+                            <div class="card-header">
+                                <div class="header-title-wrap">
+                                    <div class="title-accent"></div>
+                                    <h2 class="card-title">BUDGET ENGINE RPM</h2>
+                                </div>
+                                <div class="card-badge warn">
+                                    <i data-lucide="flame"></i> HIGH LOAD
+                                </div>
+                            </div>
+                            <div class="card-content gauges-grid">
+                                <div class="gauge-wrapper">
+                                    <canvas id="rpm-gauge" width="280" height="240"></canvas>
+                                    <div class="gauge-digital-hud font-mono">
+                                        <div class="digital-rpm" id="digital-rpm-val">7,240 RPM</div>
+                                        <div class="digital-odometer" id="digital-odo-val">₹82,450 / ₹1,20,000</div>
+                                        <div class="digital-label">MONTHLY EXPENSE RPM</div>
+                                    </div>
+                                </div>
+                                <div class="gauge-stats">
+                                    <div class="gauge-metric-card">
+                                        <span class="metric-lbl">ACTIVE REV THRESHOLD</span>
+                                        <span class="metric-val font-mono">82.5%</span>
+                                        <div class="metric-progress">
+                                            <div class="bar-fill" style="width: 82.5%;"></div>
+                                        </div>
+                                    </div>
+                                    <div class="gauge-metric-card">
+                                        <span class="metric-lbl">FUEL RESERVE (LIQUID CASH)</span>
+                                        <span class="metric-val font-mono profit">₹24,50,000</span>
+                                        <div class="metric-progress">
+                                            <div class="bar-fill green-fill" style="width: 74%;"></div>
+                                        </div>
+                                    </div>
+                                    <p class="gauge-hint font-mono">WARNING: EXCEEDING 8,000 RPM TRIGGERS PORTFOLIO REDLINE AUDITS.</p>
+                                </div>
+                            </div>
+                        </section>
+
+                    </div>
+
+                    <!-- Right Section: Interactive Asset Tabs & ITR Racing Clock -->
+                    <div class="grid-col span-1-lg">
+                        
+                        <!-- Indian Markets Assets Tab Console -->
+                        <section class="card tab-card" id="card-markets">
+                            <div class="tabs-hud">
+                                <button class="tab-btn active" data-tab="stocks">STOCKS</button>
+                                <button class="tab-btn" data-tab="funds">MUTUAL FUNDS</button>
+                                <button class="tab-btn" data-tab="debt">DEBT & FIXED</button>
+                            </div>
+                            
+                            <div class="card-content">
+                                <!-- Stocks Tab Panel -->
+                                <div class="tab-panel active" id="tab-stocks">
+                                    <div class="asset-sum font-mono">
+                                        <div class="sum-box">
+                                            <span class="lbl">STOCK VALUE</span>
+                                            <span class="val">₹2,84,15,400</span>
+                                        </div>
+                                        <div class="sum-box text-right">
+                                            <span class="lbl">XIRR RETURN</span>
+                                            <span class="val profit">22.4%</span>
+                                        </div>
+                                    </div>
+                                    <div class="asset-list">
+                                        <div class="asset-row">
+                                            <div class="asset-info">
+                                                <span class="asset-name font-mono">RELIANCE</span>
+                                                <span class="asset-qty">800 Shares</span>
+                                            </div>
+                                            <div class="asset-spark">
+                                                <span class="asset-price font-mono">₹2,945.10</span>
+                                                <span class="asset-change profit font-mono">+1.25%</span>
+                                            </div>
+                                        </div>
+                                        <div class="asset-row">
+                                            <div class="asset-info">
+                                                <span class="asset-name font-mono">TATA MOTORS</span>
+                                                <span class="asset-qty">1,200 Shares</span>
+                                            </div>
+                                            <div class="asset-spark">
+                                                <span class="asset-price font-mono">₹982.40</span>
+                                                <span class="asset-change profit font-mono">+3.80%</span>
+                                            </div>
+                                        </div>
+                                        <div class="asset-row">
+                                            <div class="asset-info">
+                                                <span class="asset-name font-mono">HDFC BANK</span>
+                                                <span class="asset-qty">1,500 Shares</span>
+                                            </div>
+                                            <div class="asset-spark">
+                                                <span class="asset-price font-mono">₹1,640.25</span>
+                                                <span class="asset-change loss font-mono">-0.45%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Mutual Funds Tab Panel -->
+                                <div class="tab-panel" id="tab-funds">
+                                    <div class="asset-sum font-mono">
+                                        <div class="sum-box">
+                                            <span class="lbl">MF HOLDINGS</span>
+                                            <span class="val">₹1,48,26,140</span>
+                                        </div>
+                                        <div class="sum-box text-right">
+                                            <span class="lbl">XIRR RETURN</span>
+                                            <span class="val profit">18.9%</span>
+                                        </div>
+                                    </div>
+                                    <div class="asset-list">
+                                        <div class="asset-row">
+                                            <div class="asset-info">
+                                                <span class="asset-name font-mono">PARAG PARIKH FLEXI</span>
+                                                <span class="asset-qty">Active SIP</span>
+                                            </div>
+                                            <div class="asset-spark">
+                                                <span class="asset-price font-mono">₹94,20,400</span>
+                                                <span class="asset-change profit font-mono">+21.2%</span>
+                                            </div>
+                                        </div>
+                                        <div class="asset-row">
+                                            <div class="asset-info">
+                                                <span class="asset-name font-mono">SBI SMALL CAP</span>
+                                                <span class="asset-qty">Active SIP</span>
+                                            </div>
+                                            <div class="asset-spark">
+                                                <span class="asset-price font-mono">₹54,05,740</span>
+                                                <span class="asset-change profit font-mono">+16.4%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Debt/Fixed Income Tab Panel -->
+                                <div class="tab-panel" id="tab-debt">
+                                    <div class="asset-sum font-mono">
+                                        <div class="sum-box">
+                                            <span class="lbl">FIXED ASSETS</span>
+                                            <span class="val">₹50,50,000</span>
+                                        </div>
+                                        <div class="sum-box text-right">
+                                            <span class="lbl">YIELD</span>
+                                            <span class="val text-muted">7.1%</span>
+                                        </div>
+                                    </div>
+                                    <div class="asset-list">
+                                        <div class="asset-row">
+                                            <div class="asset-info">
+                                                <span class="asset-name font-mono">HDFC BANK FD</span>
+                                                <span class="asset-qty">Locks Sep 2026</span>
+                                            </div>
+                                            <div class="asset-spark">
+                                                <span class="asset-price font-mono">₹30,00,000</span>
+                                                <span class="asset-change text-muted font-mono">7.25%</span>
+                                            </div>
+                                        </div>
+                                        <div class="asset-row">
+                                            <div class="asset-info">
+                                                <span class="asset-name font-mono">GOVT BONDS (G-SEC)</span>
+                                                <span class="asset-qty">10 Year yield</span>
+                                            </div>
+                                            <div class="asset-spark">
+                                                <span class="asset-price font-mono">₹20,50,000</span>
+                                                <span class="asset-change text-muted font-mono">7.05%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Tax & Compliance Clock (F1 Lap Timer Style) -->
+                        <section class="card" id="card-compliance">
+                            <div class="card-header">
+                                <div class="header-title-wrap">
+                                    <div class="title-accent"></div>
+                                    <h2 class="card-title">TAX LAP TIMER</h2>
+                                </div>
+                                <div class="card-badge gain">
+                                    <i data-lucide="timer"></i> PIT STOP INBOUND
+                                </div>
+                            </div>
+                            <div class="card-content flex-column align-center">
+                                <div class="lap-timer-hud font-mono">
+                                    <div class="lap-timer-digits" id="lap-countdown">31d 08h 14m 22s</div>
+                                    <div class="lap-timer-label">UNTIL ADVANCE TAX Q2 LIMIT</div>
+                                </div>
+                                <div class="racing-track-sectors font-mono">
+                                    <div class="sector active">
+                                        <span class="sec-id">S1</span>
+                                        <span class="sec-status">DONE</span>
+                                    </div>
+                                    <div class="sector active-current">
+                                        <span class="sec-id">S2</span>
+                                        <span class="sec-status">IN PIT</span>
+                                    </div>
+                                    <div class="sector">
+                                        <span class="sec-id">S3</span>
+                                        <span class="sec-status">PND</span>
+                                    </div>
+                                    <div class="sector">
+                                        <span class="sec-id">S4</span>
+                                        <span class="sec-status">PND</span>
+                                    </div>
+                                </div>
+                                <div class="advance-tax-estimator font-mono">
+                                    <div class="est-row">
+                                        <span>EST. TAX LIABILITY (Q2)</span>
+                                        <span class="val">₹4,20,000</span>
+                                    </div>
+                                    <div class="est-row font-bold profit">
+                                        <span>PAID TELEMETRY</span>
+                                        <span class="val">₹2,50,000</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                    </div>
+                </div>
+
+                <!-- Bottom Layout: UPI Expense Tracker & Watchlist -->
+                <div class="grid-container bottom-grid">
+                    
+                    <!-- UPI & Expense Tracker -->
+                    <section class="card span-2-lg" id="card-upi">
+                        <div class="card-header">
+                            <div class="header-title-wrap">
+                                    <div class="title-accent"></div>
+                                    <h2 class="card-title">UPI EXPENSE STREAM & TELEMETRY LEDGER</h2>
+                            </div>
+                            <div class="card-actions">
+                                <button class="hud-action-btn font-mono" id="btn-add-expense">
+                                    <i data-lucide="plus"></i> INJECT UPI TX
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="expense-hud-dashboard font-mono">
+                                <div class="expense-progress-wrapper">
+                                    <div class="expense-progress-header">
+                                        <span>DAILY FLOW CAPACITY</span>
+                                        <span id="capacity-usage">₹2,840 / ₹10,000 Limit</span>
+                                    </div>
+                                    <div class="capacity-bar">
+                                        <div class="capacity-fill" id="capacity-fill-bar" style="width: 28.4%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="transaction-list-wrap">
+                                <div class="transaction-table" id="upi-ledger">
+                                    <div class="tr-row header font-mono">
+                                        <div class="tr-cell col-time font-bold">TIME</div>
+                                        <div class="tr-cell col-desc font-bold">TRANSACTION DESCRIPTION</div>
+                                        <div class="tr-cell col-channel font-bold">CHANNEL</div>
+                                        <div class="tr-cell col-amount font-bold text-right">FLOW RATE</div>
+                                    </div>
+                                    <!-- Dynamic rows inserted here -->
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Watchlist & System Telemetry -->
+                    <section class="card span-1-lg" id="card-watchlist">
+                        <div class="card-header">
+                            <div class="header-title-wrap">
+                                <div class="title-accent"></div>
+                                <h2 class="card-title">SYSTEM COMPILATION & ALERT HUD</h2>
+                            </div>
+                        </div>
+                        <div class="card-content font-mono alert-console">
+                            <div class="alert-log-row text-muted">
+                                <span class="alert-time">[01:31:02]</span>
+                                <span class="alert-msg">BOOT_FINTECHCORPEX_OS // TELEMETRY LINK ESTABLISHED.</span>
+                            </div>
+                            <div class="alert-log-row text-muted">
+                                <span class="alert-time">[01:31:03]</span>
+                                <span class="alert-msg">ENGINE ACCEL READOUT AT 7.2k RPM. STATUS: HEALTHY.</span>
+                            </div>
+                            <div class="alert-log-row profit">
+                                <span class="alert-time">[01:31:25]</span>
+                                <span class="alert-msg">NSE TICKER SYNCED. SENSEX DRIFT: +0.65% IN 300MS.</span>
+                            </div>
+                            <div class="alert-log-row warn">
+                                <span class="alert-time">[01:32:05]</span>
+                                <span class="alert-msg">ADVANCE TAX SEC2 APEX APPROACHING PIT ENTRY TIMER.</span>
+                            </div>
+                            <div class="alert-log-row alert-glow text-accent-rosso font-bold">
+                                <span class="alert-time">[01:33:12]</span>
+                                <span class="alert-msg">SYS_GRAVITY ENGINE SLEW DETECTED. READY CMD: CTRL+ALT+G</span>
+                            </div>
+                        </div>
+                    </section>
+
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Antigravity Space overlay (shown when Easter Egg is triggered) -->
+    <div class="gravity-dimmer" id="gravity-dimmer"></div>
+    <div class="antigravity-hud" id="antigravity-hud">
+        <div class="hud-top-warning">
+            <span class="warning-blink">⚠️ GRAVITY DRIVE FAILURE ⚠️</span>
+            <span>SYSTEM FLOATING SENSORS ACTIVE</span>
+        </div>
+        <div class="hud-bottom-hint">
+            <span>PRESS [ESC] TO RETREAT LANDING GEAR AND INJECT GRAVITY DRIVE</span>
+        </div>
+    </div>
+
+    <script src="particles.js"></script>
+    <script src="charts.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
